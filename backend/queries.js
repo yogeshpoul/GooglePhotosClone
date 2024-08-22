@@ -42,8 +42,6 @@ const saveImageDb = async (request, response) => {
   }
 };
 
-
-
 const getImageURI = async (request, response) => {
   const email = request.userId;
   try {
@@ -98,7 +96,6 @@ const signup = async (request, response) => {
     validations.signupBody.parse(request.body);
     const hashedPassword = await bcrypt.hash(password, 10)
     const newUser = await User.create({ name, email, password: hashedPassword });
-    console.log("reached here")
     const token = jwt.sign({ userId: newUser.email }, process.env.JWT_SECRET);
     response.status(201).json({
       message: "User created successfully",
