@@ -10,7 +10,7 @@ router.get('/', (request, response) => {
 //signin signup
 router.post('/signup', db.signup);
 router.post('/signin', db.signin);
-router.get('/dashboard', authMiddleware, db.dashboard);
+router.get('/JWTVerifier', authMiddleware, db.JWTVerifier);
 router.post('/upload-photo',authMiddleware,db.uploadPhoto)
 router.post('/saveImageDb', authMiddleware,db.saveImageDb);
 router.get('/getImageURI', authMiddleware,db.getImageURI);

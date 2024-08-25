@@ -15,7 +15,7 @@ const uploadPhoto = async (request, response) => {
   const type = request.body.type;
   const imageName = request.body.imageName;
   const email = request.userId;
-  const photoKey = `uploads/${email + imageName}.jpg`;
+  const photoKey = `uploads/${email + imageName}`;
 
   const command = new PutObjectCommand({
     Bucket: "nodejsprivate",
@@ -139,8 +139,8 @@ const signin = async (request, response) => {
   }
 }
 
-const dashboard = async (request, response) => {
-  response.json({ message: "this is dashboard" })
+const JWTVerifier = async (request, response) => {
+  response.status(200).json({ message: "success" })
 }
 
 
@@ -148,7 +148,7 @@ const dashboard = async (request, response) => {
 module.exports = {
   signup,
   signin,
-  dashboard,
+  JWTVerifier,
   uploadPhoto,
   saveImageDb,
   getImageURI,

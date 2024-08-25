@@ -31,7 +31,6 @@ export const Signup = () => {
             }
             localStorage.setItem("token", "Bearer "+response.data.token);
         } catch (error) {
-            console.error("Error occurred during sign up:", error);
             alert("Error occurred during sign up. Please try again.");
         } finally {
             setLoading(false);
