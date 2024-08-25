@@ -8,6 +8,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 // Import PDF.js worker
 import { GlobalWorkerOptions } from 'pdfjs-dist';
+import { API_URL } from '../config';
 
 // Set the workerSrc
 GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
@@ -21,7 +22,7 @@ const ImageGallery = ({ onImagesUpdated, handleImageUpdate }) => {
     useEffect(() => {
         const fetchMediaUrls = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/getImageURI', {
+                const response = await axios.get(`${API_URL}/api/v1/getImageURI`, {
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }

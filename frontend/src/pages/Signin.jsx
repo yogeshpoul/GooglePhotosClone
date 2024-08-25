@@ -6,6 +6,7 @@ import { InputBox } from "../components/InputBox"
 import SubHeading from "../components/SubHeading"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { API_URL } from "../config"
 
 export const Signin = () => {
     const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ export const Signin = () => {
                         onClick={async () => {
                             setIsLoading(true);
                             try {
-                                const response = await axios.post("http://localhost:3000/api/v1/signin", {
+                                const response = await axios.post(`${API_URL}/api/v1/signin`, {
                                     email,
                                     password
                                 });

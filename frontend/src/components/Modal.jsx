@@ -3,6 +3,7 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import { API_URL } from '../config';
 
 const Modal = ({ selectedMedia, closeImage, handleImageUpdate }) => {
   const fileName = selectedMedia?.photoKey;
@@ -10,7 +11,7 @@ const Modal = ({ selectedMedia, closeImage, handleImageUpdate }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/v1/deleteImage`, {
+      const response = await axios.delete(`${API_URL}/api/v1/deleteImage`, {
         params: { photoKey: selectedMedia.photoKey },
         headers: {
           Authorization: localStorage.getItem('token')

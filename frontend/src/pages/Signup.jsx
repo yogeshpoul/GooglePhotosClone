@@ -6,6 +6,7 @@ import SubHeading from "../components/SubHeading"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { BottomWarning } from "../components/BottomWarning"
+import { API_URL } from "../config"
 
 export const Signup = () => {
     const [name, setName] = useState("");
@@ -17,7 +18,7 @@ export const Signup = () => {
     const handleSignup = async () => {
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/signup", {
+            const response = await axios.post(`${API_URL}/api/v1/signup`, {
                 name,
                 email,
                 password
