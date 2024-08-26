@@ -39,7 +39,7 @@ const Navbar = ({ onImageUpload }) => {
         setUploadMessage('Uploading...');
 
         try {
-            const signedUrl = await axios.post(`${API_URL}/api/v1/upload-photo`, {
+            const signedUrl = await axios.post(`http://localhost:3000/api/v1/upload-photo`, {
                 type: file.type,
                 imageName
             }, {
@@ -60,7 +60,7 @@ const Navbar = ({ onImageUpload }) => {
 
             xhr.onload = async () => {
                 if (xhr.status === 200) {
-                    await axios.post(`${API_URL}/api/v1/saveImageDb`, {
+                    await axios.post(`http://localhost:3000/api/v1/saveImageDb`, {
                         imageName,
                         photoKey: signedUrl.data.photoKey
                     }, {
