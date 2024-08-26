@@ -11,7 +11,7 @@ const Modal = ({ selectedMedia, closeImage, handleImageUpdate }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${API_URL}/api/v1/deleteImage`, {
+      const response = await axios.delete(`http://localhost:3000/api/v1/deleteImage`, {
         params: { photoKey: selectedMedia.photoKey },
         headers: {
           Authorization: localStorage.getItem('token')
