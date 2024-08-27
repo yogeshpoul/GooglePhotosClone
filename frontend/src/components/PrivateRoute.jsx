@@ -14,12 +14,16 @@ function PrivateRoute({ children }) {
             Authorization: localStorage.getItem('token'),
           },
         });
-        if (response.data.message === 'success') {
+        console.log("hereonly1")
+
+        if (response.data.message === 'Success') {
+          console.log("hereonly2")
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);
         }
       } catch (error) {
+        
         setIsAuthenticated(false);
       }
     };

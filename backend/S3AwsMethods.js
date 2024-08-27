@@ -11,6 +11,7 @@ const s3Client = new S3Client({
 });
 
 const getObjectUrl=async(key)=> {
+  console.log("key",key)
   const command = new GetObjectCommand({
     Bucket: "nodejsprivate",
     Key: key,
