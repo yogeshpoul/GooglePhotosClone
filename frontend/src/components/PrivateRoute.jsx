@@ -9,7 +9,7 @@ function PrivateRoute({ children }) {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/v1/JWTVerifier`, {
+        const response = await axios.get(`${API_URL}/api/v1/JWTVerifier`, {
           headers: {
             Authorization: localStorage.getItem('token'),
           },

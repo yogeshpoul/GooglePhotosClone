@@ -18,7 +18,7 @@ export const Signup = () => {
     const handleSignup = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`http://localhost:3000/api/v1/signup`, {
+            const response = await axios.post(`${API_URL}/api/v1/signup`, {
                 name,
                 email,
                 password

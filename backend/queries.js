@@ -33,8 +33,6 @@ const uploadPhoto = async (request, response) => {
 const saveImageDb = async (request, response) => {
   const { imageName, photoKey } = request.body;
   const email = request.userId;
-  console.log("Request body:", request.body);
-  console.log("User ID:", request.userId);
 
   try {
     const result = await pool.query(
@@ -62,9 +60,7 @@ const getImageURI = async (request, response) => {
     if (!imagesInfo.length) {
       return response.status(404).json({ message: 'No images found for this email' });
     }
-    console.log("imageInfo",imagesInfo[0].photokey);
     const photoUrls = await Promise.all(imagesInfo.map(async (imageInfo) => {
-      console.log("photoKey",imageInfo.photokey);
       const photoUrl = await getObjectUrl(imageInfo.photokey);
       return {
         photoKey: imageInfo.photokey,
@@ -85,27 +81,20 @@ const getImageURI = async (request, response) => {
 const deleteImage = async (request, response) => {
   const email = request.userId;
   const photoKey = request.query.photoKey;
-
   const command = new DeleteObjectCommand({
     Bucket: "nodejsprivate",
     Key: photoKey,
   });
-
   try {
-    const imageInfoResult = await pool.query('SELECT * FROM userPhotos WHERE email = $1 AND photoKey = $2', [email, photoKey]);
+    const imageInfoResult = await pool.query('SELECT * FROM "userPhotos" WHERE email = $1 AND photoKey = $2', [email, photoKey]);
     const imageInfo = imageInfoResult.rows[0];
-
     if (!imageInfo) {
       return response.status(404).json({ message: 'Image not found.' });
     }
-
     const S3DeleteStatus = await s3Client.send(command);
-
-    await pool.query('DELETE FROM userPhotos WHERE email = $1 AND photoKey = $2', [email, photoKey]);
-
+    await pool.query('DELETE FROM "userPhotos" WHERE email = $1 AND photoKey = $2', [email, photoKey]);
     response.status(200).json({ message: 'Image deleted successfully.', S3DeleteStatus });
   } catch (error) {
-    console.error('Error occurred while deleting the image:', error);
     response.status(500).json({ message: 'Internal server error.' });
   }
 };

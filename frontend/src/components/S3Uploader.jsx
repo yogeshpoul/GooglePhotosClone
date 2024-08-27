@@ -13,7 +13,7 @@ export const S3Uploader = () => {
         // Fetch the image URLs when the component mounts
         const fetchImageUrls = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/getImageURI', {
+                const response = await axios.get('${API_URL}/api/v1/getImageURI', {
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }
@@ -39,7 +39,7 @@ export const S3Uploader = () => {
     useEffect(() => {
         async function fetchData() {
             try {
-                await axios.get("http://localhost:3000/api/v1/JWTVerifier", {
+                await axios.get("${API_URL}/api/v1/JWTVerifier", {
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }
@@ -58,7 +58,7 @@ export const S3Uploader = () => {
 
     const uploadFile = async () => {
         try {
-            const signedUrl = await axios.post("http://localhost:3000/api/v1/upload-photo", {
+            const signedUrl = await axios.post("${API_URL}/api/v1/upload-photo", {
                 type: selectedFile.type,
                 imageName
             }, {
@@ -73,7 +73,7 @@ export const S3Uploader = () => {
             };
             await fetch(signedUrl.data.url, options);
 
-            await axios.post("http://localhost:3000/api/v1/saveImageDb", {
+            await axios.post("${API_URL}/api/v1/saveImageDb", {
                 imageName,
                 photoKey: signedUrl.data.photoKey
             }, {

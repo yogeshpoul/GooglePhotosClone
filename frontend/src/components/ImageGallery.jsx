@@ -22,7 +22,7 @@ const ImageGallery = ({ onImagesUpdated, handleImageUpdate }) => {
     useEffect(() => {
         const fetchMediaUrls = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/v1/getImageURI`, {
+                const response = await axios.get(`${API_URL}/api/v1/getImageURI`, {
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }

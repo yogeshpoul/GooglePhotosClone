@@ -32,7 +32,7 @@ export const Signin = () => {
                         onClick={async () => {
                             setIsLoading(true);
                             try {
-                                const response = await axios.post(`http://localhost:3000/api/v1/signin`, {
+                                const response = await axios.post(`${API_URL}/api/v1/signin`, {
                                     email,
                                     password
                                 });
