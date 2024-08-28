@@ -14,11 +14,13 @@ export const Signup = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    
 
     const handleSignup = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`${API_URL}/api/v1/signup`, {
+            console.log("api URL",API_URL)
+            const response = await axios.post(`http://localhost:3000/api/v1/signup`, {
                 name,
                 email,
                 password

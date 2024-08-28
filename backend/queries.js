@@ -99,33 +99,36 @@ const deleteImage = async (request, response) => {
   }
 };
 
-// User Signup
 const signup = async (request, response) => {
   const { name, email, password } = request.body;
 
   try {
-    validations.signupBody.parse(request.body);
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUserResult = await pool.query(
-      'INSERT INTO Users (name, email, password) VALUES ($1, $2, $3) RETURNING *',
-      [name, email, hashedPassword]
-    );
+      validations.signupBody.parse(request.body);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-    const token = jwt.sign({ userId: newUserResult.rows[0].email }, process.env.JWT_SECRET);
-    response.status(201).json({
-      message: "User created successfully",
-      token: token,
-    });
+      const newUserResult = await pool.query(
+          'INSERT INTO "Users" (name, email, password, "updatedAt") VALUES ($1, $2, $3, NOW()) RETURNING *',
+          [name, email, hashedPassword]
+      );
+
+      const token = jwt.sign({ userId: newUserResult.rows[0].email }, process.env.JWT_SECRET);
+      response.status(201).json({
+          message: "User created successfully",
+          token: token,
+      });
 
   } catch (e) {
-    if (e instanceof zod.ZodError) {
-      const errorMessages = e.errors.map(err => err.message);
-      response.status(500).json({ error: errorMessages });
-    } else {
-      response.status(500).json({ error: e.message });
-    }
+      console.error("Error in signup function:", e);
+      if (e instanceof zod.ZodError) {
+          const errorMessages = e.errors.map(err => err.message);
+          response.status(500).json({ error: errorMessages });
+      } else {
+          response.status(500).json({ error: e.message });
+      }
   }
 }
+
+
 
 // User Signin
 const signin = async (request, response) => {
@@ -133,8 +136,24 @@ const signin = async (request, response) => {
 
   try {
     validations.signinBody.parse(request.body);
+    
+    console.log('Sign-in attempt:', email);
 
-    const userResult = await pool.query('SELECT * FROM Users WHERE email = $1', [email]);
+    const maxRetries = 3;
+    let attempts = 0;
+    let userResult;
+
+    while (attempts < maxRetries) {
+      try {
+        userResult = await pool.query('SELECT * FROM "Users" WHERE email = $1', [email]);
+        break;  // Exit loop if query is successful
+      } catch (err) {
+        attempts++;
+        console.error(`Attempt ${attempts} failed:`, err);
+        if (attempts >= maxRetries) throw err;
+      }
+    }
+
     const user = userResult.rows[0];
 
     if (!user) {
@@ -157,10 +176,12 @@ const signin = async (request, response) => {
       const errorMessages = e.errors.map(err => err.message);
       response.status(500).json({ error: errorMessages });
     } else {
+      console.error('Error in signin function:', e);
       response.status(500).json({ error: e.message });
     }
   }
-}
+};
+
 
 const JWTVerifier = async (request, response) => {
   response.status(200).json({ message: "Success" });
