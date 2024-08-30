@@ -11,13 +11,22 @@ const s3Client = new S3Client({
 });
 
 const getObjectUrl=async(key)=> {
-  console.log("key",key)
   const command = new GetObjectCommand({
     Bucket: "nodejsprivate",
     Key: key,
+    ResponseContentDisposition: 'attachment'
+  });
+  const url = await getSignedUrl(s3Client, command);
+  return url;
+}
+const getShareableUrl=async(key)=> {
+  const command = new GetObjectCommand({
+    Bucket: "nodejsprivate",
+    Key: key,
+    // ResponseContentDisposition: 'attachment'
   });
   const url = await getSignedUrl(s3Client, command);
   return url;
 }
 
-module.exports={s3Client,getObjectUrl}
+module.exports={s3Client,getObjectUrl,getShareableUrl}

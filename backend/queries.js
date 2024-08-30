@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const pool = require('./db');  // Import the pool
 const validations = require('./zodValidation');
-const { s3Client, getObjectUrl } = require("./S3AwsMethods");
+const { s3Client, getObjectUrl, getShareableUrl } = require("./S3AwsMethods");
 require('dotenv').config();
 
 // Upload Photo to S3
@@ -39,7 +39,7 @@ const saveImageDb = async (request, response) => {
       'INSERT INTO "userPhotos" (email, imageName, photoKey) VALUES ($1, $2, $3) RETURNING *',
       [email, imageName, photoKey]
     );
-    console.log("SQL query result:", result);
+
 
     response.status(201).send({ "message": 'Image registered successfully' });
   } catch (error) {
@@ -62,9 +62,12 @@ const getImageURI = async (request, response) => {
     }
     const photoUrls = await Promise.all(imagesInfo.map(async (imageInfo) => {
       const photoUrl = await getObjectUrl(imageInfo.photokey);
+      const shareableUrl = await getShareableUrl(imageInfo.photokey);
+
       return {
         photoKey: imageInfo.photokey,
         imageUrl: photoUrl,
+        shareableUrl
       };
     }));
 
