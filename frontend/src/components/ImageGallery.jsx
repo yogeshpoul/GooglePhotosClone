@@ -59,13 +59,13 @@ const ImageGallery = ({ onImagesUpdated, handleImageUpdate }) => {
 
         if (extension === 'mp4') {
             return (
-                <video className="w-full h-48 object-cover rounded-lg">
+                <video className="w-full h-48 object-cover">
                     <source src={media.imageUrl} type="video/mp4" />
                 </video>
             );
         } else if (extension === 'pdf') {
             return (
-                <div className="w-full h-48 object-cover rounded-lg">
+                <div className="w-full h-48 object-cover">
                     <Viewer fileUrl={media.imageUrl} />
                 </div>
             );
@@ -74,7 +74,7 @@ const ImageGallery = ({ onImagesUpdated, handleImageUpdate }) => {
                 <img
                     src={media.imageUrl}
                     alt="Image Thumbnail"
-                    className="w-full h-48 object-cover rounded-lg"
+                    className="w-full h-48 object-cover"
                 />
             );
         }

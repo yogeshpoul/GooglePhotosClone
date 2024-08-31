@@ -139,9 +139,6 @@ const signin = async (request, response) => {
 
   try {
     validations.signinBody.parse(request.body);
-    
-    console.log('Sign-in attempt:', email);
-
     const maxRetries = 3;
     let attempts = 0;
     let userResult;
